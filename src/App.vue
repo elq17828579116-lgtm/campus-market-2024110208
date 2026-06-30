@@ -43,7 +43,7 @@ const navItems = [
       </router-view>
     </main>
     <footer class="footer">
-      <p>&#x1F33F; 校园轻集市 &middot; 绿色交易，快乐校园 &middot; Day3 Mock + 列表渲染</p>
+      <p>&#x1F33F; 校园轻集市 &middot; 绿色交易，快乐校园 &middot; Day4 发布表单 + 数据提交</p>
     </footer>
   </div>
 </template>

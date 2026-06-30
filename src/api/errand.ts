@@ -18,3 +18,7 @@ export interface ErrandItem {
 export function getErrands() {
   return http.get<ErrandItem[]>('/errands')
 }
+
+export function addErrand(data: Omit<ErrandItem, 'id'>) {
+  return http.post<ErrandItem>('/errands', data)
+}
