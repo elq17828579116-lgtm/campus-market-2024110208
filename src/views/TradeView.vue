@@ -29,11 +29,11 @@
       <div class="filter-group">
         <button
           v-for="cat in allCategories"
-          :key="cat.key"
+          :key="cat"
           class="filter-btn"
-          :class="{ active: activeCategory === cat.key }"
-          @click="activeCategory = cat.key"
-        >{{ cat.label }}</button>
+          :class="{ active: activeCategory === cat }"
+          @click="activeCategory = cat"
+        >{{ cat }}</button>
       </div>
     </div>
 
