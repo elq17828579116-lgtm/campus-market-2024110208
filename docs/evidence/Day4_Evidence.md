@@ -2,8 +2,8 @@
 
 **项目名称**：校园轻集市  
 **日期**：2026-06-30  
-**学生姓名**：（请填写）  
-**学号**：（请填写）
+**学生姓名**：林同学  
+**学号**：2024110208
 
 ---
 
@@ -106,7 +106,7 @@ export function addTrade(data: Omit<TradeItem, 'id'>) {
 
 ### 使用的 AI 工具
 
-（请填写，例如：通义灵码 / GitHub Copilot / Cursor 等）
+Opencode (big-pickle)
 
 ### AI 辅助生成内容
 

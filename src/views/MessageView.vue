@@ -1,22 +1,19 @@
 <script setup lang="ts">
-const messages = [
-  { from: '张三', content: '同学你好，这个商品还在吗？我想今天下午过来看看', time: '10:30', unread: true },
-  { from: '李四', content: '价格还能再便宜一点吗？我诚心想要', time: '昨天', unread: true },
-  { from: '系统通知', content: '你的商品「高等数学」已审核通过，现在可以公开浏览了', time: '昨天', unread: false },
-  { from: '王五', content: '好的，那我们明天中午12点图书馆门口见', time: '3天前', unread: false },
-  { from: '系统通知', content: '恭喜！你的商品「工学椅」已成功售出', time: '5天前', unread: false },
-]
+import { useMessageStore } from '@/stores/message'
+
+const msg = useMessageStore()
 </script>
 
 <template>
   <div class="msg-page">
     <div class="page-header">
       <h1>消息中心</h1>
-      <span class="unread-badge">{{ messages.filter(m => m.unread).length }} 条未读</span>
+      <span class="unread-badge">{{ msg.unreadCount }} 条未读</span>
+      <button v-if="msg.unreadCount > 0" class="read-all-btn" @click="msg.markAllRead()">全部已读</button>
     </div>
 
     <div class="msg-list">
-      <div v-for="(m, i) in messages" :key="i" class="msg-card" :class="{ unread: m.unread }">
+      <div v-for="(m, i) in msg.messages" :key="i" class="msg-card" :class="{ unread: m.unread }" @click="msg.markAsRead(i)">
         <div class="msg-avatar" :style="{ background: m.unread ? 'linear-gradient(135deg,#2ecc71,#27ae60)' : '#e0e0e0' }">
           {{ m.from[0] }}
         </div>
@@ -40,6 +37,12 @@ const messages = [
   background: #f0fdf4; color: #2ecc71; padding: 4px 14px;
   border-radius: 20px; font-size: 0.8em; font-weight: 600;
 }
+.read-all-btn {
+  background: none; border: 1px solid #2ecc71; color: #2ecc71;
+  padding: 4px 14px; border-radius: 20px; font-size: 0.78em;
+  cursor: pointer; transition: all 0.2s; margin-left: auto;
+}
+.read-all-btn:hover { background: #2ecc71; color: #fff; }
 
 .msg-list { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 import { addTrade } from '@/api/trade'
 import { addLostFound } from '@/api/lostFound'
 import { addGroupBuy } from '@/api/groupBuy'
@@ -8,6 +9,7 @@ import { addErrand } from '@/api/errand'
 import FormField from '@/components/FormField.vue'
 
 const router = useRouter()
+const user = useUserStore()
 
 const publishTypes = [
   { value: 'trade', label: '二手交易' },
@@ -106,7 +108,7 @@ async function handleSubmit() {
     const base = {
       title: form.value.title,
       description: form.value.description,
-      publisher: '当前用户',
+      publisher: user.username + ' (' + user.college + ')',
       status: 'active',
       views: 0,
     }

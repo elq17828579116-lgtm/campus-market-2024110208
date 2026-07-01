@@ -75,7 +75,14 @@
               <div class="progress-fill" :style="{ width: Math.min(100, item.currentCount / item.targetCount * 100) + '%' }"></div>
             </div>
           </div>
-          <span class="publisher">{{ item.publisher }}</span>
+          <div class="footer-right">
+            <button
+              class="fav-btn"
+              :class="{ active: fav.isFavorited('groupBuy', item.id) }"
+              @click="fav.toggleFavorite({ type: 'groupBuy', id: item.id, title: item.title, description: item.description, tag: item.type, addedAt: '' })"
+            >{{ fav.isFavorited('groupBuy', item.id) ? '&#x2764;&#xFE0F;' : '&#x1F90D;' }}</button>
+            <span class="publisher">{{ item.publisher }}</span>
+          </div>
         </template>
       </ItemCard>
     </div>
@@ -87,6 +94,9 @@ import { computed, onMounted, ref } from 'vue'
 import ItemCard from '../components/ItemCard.vue'
 import EmptyState from '../components/EmptyState.vue'
 import { getGroupBuys, type GroupBuyItem } from '../api/groupBuy'
+import { useFavoriteStore } from '@/stores/favorite'
+
+const fav = useFavoriteStore()
 
 const items = ref<GroupBuyItem[]>([])
 const loading = ref(true)
@@ -256,6 +266,15 @@ onMounted(async () => {
   transition: width 0.5s ease;
 }
 .publisher { color: #b2bec3; font-size: 0.8em; }
+.footer-right { display: flex; align-items: center; gap: 8px; }
+.fav-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: 1.1em; padding: 2px; line-height: 1;
+  transition: transform 0.2s;
+}
+.fav-btn:hover { transform: scale(1.2); }
+.fav-btn.active { animation: heartBeat 0.3s ease; }
+@keyframes heartBeat { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
 
 @media (max-width: 640px) {
   .list { grid-template-columns: 1fr; }

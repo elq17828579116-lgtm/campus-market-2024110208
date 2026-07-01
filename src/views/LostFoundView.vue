@@ -67,6 +67,11 @@
             <span class="contact-text">{{ item.contact }}</span>
           </div>
           <div class="footer-right">
+            <button
+              class="fav-btn"
+              :class="{ active: fav.isFavorited('lostFound', item.id) }"
+              @click="fav.toggleFavorite({ type: 'lostFound', id: item.id, title: item.title, description: item.description, tag: item.itemName, addedAt: '' })"
+            >{{ fav.isFavorited('lostFound', item.id) ? '&#x2764;&#xFE0F;' : '&#x1F90D;' }}</button>
             <span class="item-badge">{{ item.itemName }}</span>
             <span class="views">&#x1F441; {{ item.views }}</span>
           </div>
@@ -81,6 +86,9 @@ import { computed, onMounted, ref } from 'vue'
 import ItemCard from '../components/ItemCard.vue'
 import EmptyState from '../components/EmptyState.vue'
 import { getLostFounds, type LostFoundItem } from '../api/lostFound'
+import { useFavoriteStore } from '@/stores/favorite'
+
+const fav = useFavoriteStore()
 
 const items = ref<LostFoundItem[]>([])
 const loading = ref(true)
@@ -226,6 +234,14 @@ onMounted(async () => {
   font-weight: 600;
 }
 .views { font-size: 0.8em; color: #b2bec3; }
+.fav-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: 1.1em; padding: 2px; line-height: 1;
+  transition: transform 0.2s;
+}
+.fav-btn:hover { transform: scale(1.2); }
+.fav-btn.active { animation: heartBeat 0.3s ease; }
+@keyframes heartBeat { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
 
 @media (max-width: 640px) {
   .list { grid-template-columns: 1fr; }

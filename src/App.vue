@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 
 const route = useRoute()
+const user = useUserStore()
 
 const navItems = [
   { path: '/home', label: '首页', icon: '\u{1F3E0}' },
@@ -34,6 +36,10 @@ const navItems = [
           <span class="nav-label">{{ item.label }}</span>
         </RouterLink>
       </nav>
+      <div class="user-info">
+        <span class="user-avatar">{{ user.initials }}</span>
+        <span class="user-name">{{ user.displayName }}</span>
+      </div>
     </header>
     <main class="main">
       <router-view v-slot="{ Component }">
@@ -43,7 +49,7 @@ const navItems = [
       </router-view>
     </main>
     <footer class="footer">
-      <p>&#x1F33F; 校园轻集市 &middot; 绿色交易，快乐校园 &middot; Day4 发布表单 + 数据提交</p>
+      <p>&#x1F33F; 校园轻集市 &middot; 绿色交易，快乐校园 &middot; Day1-5 全功能版本</p>
     </footer>
   </div>
 </template>
@@ -63,11 +69,10 @@ const navItems = [
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 16px;
   height: 60px;
   background: rgba(255,255,255,0.88);
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(0,0,0,0.06);
   box-shadow: 0 1px 8px rgba(0,0,0,0.04);
 }
@@ -75,29 +80,30 @@ const navItems = [
 .brand {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   text-decoration: none;
+  flex-shrink: 0;
 }
-.brand-icon { font-size: 1.6em; }
+.brand-icon { font-size: 1.5em; }
 .brand-text {
-  font-size: 1.15em;
+  font-size: 1.1em;
   font-weight: 700;
   background: linear-gradient(135deg, #2ecc71, #27ae60);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.nav { display: flex; gap: 2px; }
+.nav { display: flex; gap: 1px; }
 
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 3px;
-  padding: 6px 9px;
+  gap: 2px;
+  padding: 5px 7px;
   border-radius: 8px;
   text-decoration: none;
   color: #636e72;
-  font-size: 0.8em;
+  font-size: 0.75em;
   transition: all 0.2s ease;
   white-space: nowrap;
 }
@@ -110,7 +116,38 @@ const navItems = [
   color: #fff;
   box-shadow: 0 4px 12px rgba(46,204,113,0.3);
 }
-.nav-icon { font-size: 1em; }
+.nav-icon { font-size: 0.95em; }
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 4px 10px 4px 6px;
+  border-radius: 20px;
+  background: rgba(46,204,113,0.06);
+  border: 1px solid rgba(46,204,113,0.12);
+}
+.user-avatar {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7em;
+  font-weight: 700;
+}
+.user-name {
+  font-size: 0.78em;
+  color: #2d3436;
+  font-weight: 600;
+  max-width: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 .main {
   flex: 1;
@@ -128,16 +165,9 @@ const navItems = [
   border-top: 1px solid rgba(0,0,0,0.04);
 }
 
-.page-enter-active,
-.page-leave-active {
+.page-enter-active, .page-leave-active {
   transition: all 0.25s ease;
 }
-.page-enter-from {
-  opacity: 0;
-  transform: translateY(12px);
-}
-.page-leave-to {
-  opacity: 0;
-  transform: translateY(-12px);
-}
+.page-enter-from { opacity: 0; transform: translateY(12px); }
+.page-leave-to { opacity: 0; transform: translateY(-12px); }
 </style>
