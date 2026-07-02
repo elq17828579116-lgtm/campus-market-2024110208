@@ -22,10 +22,7 @@
     </div>
 
     <div class="toolbar">
-      <div class="search-box">
-        <span class="search-icon">&#x1F50D;</span>
-        <input v-model="search" placeholder="搜索商品名称..." class="search-input" />
-      </div>
+      <SearchBar v-model="search" placeholder="搜索商品名称..." />
       <div class="filter-group">
         <button
           v-for="cat in allCategories"
@@ -37,10 +34,8 @@
       </div>
     </div>
 
-    <div v-if="loading" class="loading-state">
-      <div class="loading-spinner"></div>
-      <p>加载中...</p>
-    </div>
+    <LoadingState v-if="loading" />
+    <ErrorState v-else-if="error" text="加载失败，请确认 Mock 服务已启动" @retry="fetchTrades" />
     <EmptyState v-else-if="filtered.length === 0" text="没有找到符合条件的商品" />
     <div v-else class="list">
       <ItemCard
@@ -85,6 +80,9 @@
 import { computed, onMounted, ref } from 'vue'
 import ItemCard from '../components/ItemCard.vue'
 import EmptyState from '../components/EmptyState.vue'
+import LoadingState from '../components/LoadingState.vue'
+import ErrorState from '../components/ErrorState.vue'
+import SearchBar from '../components/SearchBar.vue'
 import { getTrades, type TradeItem } from '../api/trade'
 import { useFavoriteStore } from '@/stores/favorite'
 
@@ -92,6 +90,7 @@ const fav = useFavoriteStore()
 
 const trades = ref<TradeItem[]>([])
 const loading = ref(true)
+const error = ref(false)
 const search = ref('')
 const activeCategory = ref('全部')
 
@@ -142,16 +141,20 @@ function tagType(cond: string) {
   return 'purple'
 }
 
-onMounted(async () => {
+async function fetchTrades() {
+  loading.value = true
+  error.value = false
   try {
     const res = await getTrades()
     trades.value = res.data
   } catch {
-    // handled
+    error.value = true
   } finally {
     loading.value = false
   }
-})
+}
+
+onMounted(fetchTrades)
 </script>
 
 <style scoped>
@@ -178,20 +181,6 @@ onMounted(async () => {
   flex-direction: column;
   gap: 12px;
 }
-.search-box {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
-  background: #fff;
-  border-radius: 12px;
-  border: 1px solid #eef0f2;
-  transition: border-color 0.2s;
-}
-.search-box:focus-within { border-color: #2ecc71; }
-.search-icon { font-size: 1em; }
-.search-input { flex: 1; border: none; outline: none; font-size: 0.9em; background: transparent; }
-
 .filter-group { display: flex; gap: 8px; flex-wrap: wrap; }
 .filter-btn {
   padding: 6px 16px;
@@ -209,17 +198,6 @@ onMounted(async () => {
   color: #fff;
   border-color: transparent;
 }
-
-.loading-state { text-align: center; padding: 60px 0; color: #b2bec3; }
-.loading-spinner {
-  width: 36px; height: 36px;
-  margin: 0 auto 12px;
-  border: 3px solid #eef0f2;
-  border-top-color: #2ecc71;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
 
 .list {
   display: grid;

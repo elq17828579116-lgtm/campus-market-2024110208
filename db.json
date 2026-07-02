@@ -415,6 +415,34 @@
       "description": "想玩密室逃脱还差 2 人！恐怖主题《医院怪谈》，拼团价每人 55 元（原价 88），周末下午去，胆子大的来！"
     }
   ],
+  "users": [
+    {
+      "id": 1,
+      "username": "student1",
+      "password": "123456",
+      "name": "林同学",
+      "college": "计算机科学与技术学院",
+      "grade": "2024级",
+      "studentId": "2024110208",
+      "joinDate": "2026-03",
+      "publishedCount": 12,
+      "tradedCount": 8,
+      "followerCount": 23
+    },
+    {
+      "id": 2,
+      "username": "teacher1",
+      "password": "123456",
+      "name": "张老师",
+      "college": "计算机科学与技术学院",
+      "grade": "教师",
+      "studentId": "T2024001",
+      "joinDate": "2024-09",
+      "publishedCount": 5,
+      "tradedCount": 3,
+      "followerCount": 45
+    }
+  ],
   "errands": [
     {
       "id": 1,

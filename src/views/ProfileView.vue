@@ -54,6 +54,13 @@ onMounted(async () => {
 
 <template>
   <div class="profile-page">
+    <div v-if="!user.isLoggedIn" class="login-prompt">
+      <div class="prompt-icon">&#x1F464;</div>
+      <h2>请先登录</h2>
+      <p>登录后查看个人资料和收藏内容</p>
+      <RouterLink to="/login" class="prompt-btn">去登录</RouterLink>
+    </div>
+    <template v-else>
     <div class="profile-cover">
       <div class="cover-grad"></div>
       <div class="profile-info">
@@ -123,6 +130,7 @@ onMounted(async () => {
         <span class="menu-arrow">&#x203A;</span>
       </div>
     </div>
+  </template>
   </div>
 </template>
 
@@ -225,4 +233,43 @@ onMounted(async () => {
 .menu-icon { font-size: 1.2em; }
 .menu-label { flex: 1; color: #2d3436; font-weight: 500; }
 .menu-arrow { color: #ddd; font-size: 1.3em; }
+
+.login-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80px 20px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.prompt-icon {
+  font-size: 3em;
+  margin-bottom: 12px;
+}
+.login-prompt h2 {
+  margin: 0;
+  color: #2d3436;
+}
+.login-prompt p {
+  color: #b2bec3;
+  font-size: 0.88em;
+  margin: 6px 0 24px;
+}
+.prompt-btn {
+  display: inline-block;
+  padding: 12px 36px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: #fff;
+  font-size: 1em;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 16px rgba(46,204,113,0.35);
+}
+.prompt-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(46,204,113,0.45);
+}
 </style>

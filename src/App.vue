@@ -1,9 +1,15 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { onMounted } from 'vue'
 
 const route = useRoute()
+const router = useRouter()
 const user = useUserStore()
+
+onMounted(() => {
+  user.restoreLogin()
+})
 
 const navItems = [
   { path: '/home', label: '首页', icon: '\u{1F3E0}' },
@@ -36,9 +42,15 @@ const navItems = [
           <span class="nav-label">{{ item.label }}</span>
         </RouterLink>
       </nav>
-      <div class="user-info">
+      <div v-if="user.isLoggedIn" class="user-info">
         <span class="user-avatar">{{ user.initials }}</span>
         <span class="user-name">{{ user.displayName }}</span>
+        <button class="logout-btn" @click="user.logout(); router.push('/home')">退出</button>
+      </div>
+      <div v-else class="user-info guest">
+        <RouterLink to="/login" class="auth-link">登录</RouterLink>
+        <span class="auth-sep">/</span>
+        <RouterLink to="/register" class="auth-link">注册</RouterLink>
       </div>
     </header>
     <main class="main">
@@ -49,7 +61,7 @@ const navItems = [
       </router-view>
     </main>
     <footer class="footer">
-      <p>&#x1F33F; 校园轻集市 &middot; 绿色交易，快乐校园 &middot; Day1-5 全功能版本</p>
+      <p>&#x1F33F; 校园轻集市 &middot; 绿色交易，快乐校园 &middot; Day1-6 注册登录与交互优化</p>
     </footer>
   </div>
 </template>
@@ -147,6 +159,37 @@ const navItems = [
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.user-info.guest {
+  border-color: transparent;
+  background: transparent;
+}
+.user-info .auth-link {
+  font-size: 0.8em;
+  color: #2ecc71;
+  text-decoration: none;
+  font-weight: 600;
+}
+.user-info .auth-link:hover {
+  text-decoration: underline;
+}
+.auth-sep {
+  color: #ddd;
+  font-size: 0.8em;
+}
+.logout-btn {
+  background: none;
+  border: none;
+  color: #b2bec3;
+  font-size: 0.72em;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.logout-btn:hover {
+  color: #d63031;
+  background: rgba(214,48,49,0.06);
 }
 
 .main {

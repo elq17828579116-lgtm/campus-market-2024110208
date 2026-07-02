@@ -101,6 +101,11 @@ watch(type, () => {
 
 async function handleSubmit() {
   if (!validate()) return
+  if (!user.isLoggedIn) {
+    alert('请先登录后再发布')
+    router.push('/login')
+    return
+  }
   submitting.value = true
 
   try {
@@ -166,7 +171,7 @@ async function handleSubmit() {
     }
     setTimeout(() => router.push(pathMap[type.value]), 1200)
   } catch {
-    alert('发布失败，请确认 Mock 服务已启动')
+    alert('发布失败，请检查 Mock 服务是否已启动，网络是否正常')
   } finally {
     submitting.value = false
   }
